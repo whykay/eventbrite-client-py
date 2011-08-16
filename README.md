@@ -14,12 +14,20 @@ Client provides the following:
 
 For information, see http://developer.eventbrite.com/doc/
 
-Installation
-============
+Usage Example
+=============
+
+==Installation==
 NOTE:  This package requires a JSON library - by default we check for "simplejson" or use the built-in "json" library provided in python 2.6+
 
-* easy_install eventbrite
-* pip install eventbrite
+* `easy_install eventbrite`
+* Or, `pip install eventbrite`
+
+==Initialize the Client ==
+
+    eb_client = 
+
+
 
 Links
 =====
