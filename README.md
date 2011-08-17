@@ -25,11 +25,11 @@ NOTE:  This package requires a JSON library - by default we check for "simplejso
 
     pip install eventbrite
 
-###Load the Eventbrite API Client###
+###Loading the Eventbrite API Client###
 
     import eventbrite
 
-###Initialize the Client###
+###Initializing the Client###
 
     # Set your API / Application key - http://eventbrite.com/api/key
     app_key = 'YOUR_APP_KEY'
