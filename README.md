@@ -17,22 +17,31 @@ For information, see http://developer.eventbrite.com/doc/
 
 NOTE:  This package requires a JSON library - by default we check for "simplejson" or use the built-in "json" library provided in python 2.6+
 
-* `easy_install eventbrite`
-* Or, `pip install eventbrite`
+####Installation using easy_install####
+
+    easy_install eventbrite
+
+####Installation using pip####
+
+    pip install eventbrite
+
+###Load the Eventbrite API Client###
+
+    import eventbrite
 
 ###Initialize the Client###
 
-    // set your API / Application key - http://eventbrite.com/api/key
+    # Set your API / Application key - http://eventbrite.com/api/key
     app_key = 'YOUR_APP_KEY'
-    // set your user_key - http://eventbrite.com/userkeyapi
+    # Set your user_key - http://eventbrite.com/userkeyapi
     user_key = 'YOUR_USER_KEY'
-    // Initialize the API Client
+    # Initialize the API Client
     eb_client = eventbrite.EventbriteClient(app_key, user_key)
 
 ###Calling API methods###
 
-    // try running dir(eb_client) to see the list of available methods
-    //   Here is an example for calling the API's user_list_events method
+    # try running dir(eb_client) to see the list of available methods
+    #   Here is an example for calling the API's user_list_events method
     eb_client.list_user_events()
 
 ##Links##
