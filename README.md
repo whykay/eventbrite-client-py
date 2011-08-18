@@ -2,7 +2,9 @@
 
 ##Description##
 A simple python-based http client for the Eventbrite API
+
 For the latest information on this project, take a look at:
+
 * [This project's source code repo](http://github.com/eventbrite/eventbrite-client-py/)
 * [The Eventbrite API documentation](http://developer.eventbrite.com/doc/)
 
