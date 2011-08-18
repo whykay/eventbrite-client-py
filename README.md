@@ -22,7 +22,7 @@ NOTE:  This package requires a JSON library - by default we check for "simplejso
 
     pip install eventbrite
 
-###Loading the Eventbrite API Clienti library code###
+###Loading the Eventbrite API Client library code###
 
     import eventbrite
 
@@ -38,7 +38,7 @@ Set your user_key if you want to access private data - http://eventbrite.com/use
 ###Calling API methods###
 See [Eventbrite's API method documentation](http://developer.eventbrite.com/doc/) for more information about the list of available client methods.
 
-Here is an example for calling the API's [user_list_events](http://developer.eventbrite.com/doc/users/user_list_events/) method
+Here is an example using the API's [user_list_events](http://developer.eventbrite.com/doc/users/user_list_events/) method
 
     response = eb_client.user_list_events()
 
@@ -47,7 +47,7 @@ The [event_get](http://developer.eventbrite.com/doc/events/event_get/) API call 
     response = eb_client.event_get({'id':1848891083})
 
 ### Widgets ###
-Converting an event into a [ticketWidget](http://www.eventbrite.com/t/how-to-use-ticket-widget) might look like this:
+Rendering an event in html as a [ticketWidget](http://www.eventbrite.com/t/how-to-use-ticket-widget) is easy:
 
     response = eb_client.event_get({'id':1848891083})
     widget_html = eventbrite.EventbriteWidgets.ticketWidget(response['event'])
