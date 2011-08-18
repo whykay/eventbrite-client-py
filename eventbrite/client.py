@@ -101,7 +101,8 @@ class EventbriteClient(object):
             method_arguments = {}
 
         # Add authentication tokens
-        method_arguments.update(self._auth_tokens)
+        if 'access_token' not in self._auth_tokens:
+            method_arguments.update(self._auth_tokens)
 
         # urlencode API method parameters
         encoded_params = urllib.urlencode(method_arguments)
@@ -111,7 +112,11 @@ class EventbriteClient(object):
         EVENTBRITE_LOGGER.debug("REQ - %s", request_url)
 
         # Send a GET request to Eventbrite
-        self._https_connection.request('GET', request_url)
+        # if using OAuth2.0 for authentication, set additional headers
+        if 'access_token' in self._auth_tokens:
+            self._https_connection.request('GET', request_url, None, {'Authorization': "Bearer " + self._auth_tokens['access_token']})
+        else:
+            self._https_connection.request('GET', request_url)
 
         # Read the JSON response 
         response_data = self._https_connection.getresponse().read()
