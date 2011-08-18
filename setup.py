@@ -7,11 +7,11 @@ from eventbrite import __version__ as version
 setup(
     name = 'eventbrite',
     version = version,
-    author = 'Matthew Tai',
-    author_email = 'mtai84@gmail.com',
-    description = "Client for Eventbrite's HTTP-based API",
-    long_description=open('README.txt').read(),
-    url = 'http://github.com/mtai/eventbrite/',
+    author = 'Ryan Jarvinen',
+    author_email = 'ryan.jarvinen@gmail.com',
+    description = "pyhton client for Eventbrite's HTTP-based API",
+    long_description=open('README.md').read(),
+    url = 'http://github.com/eventbrite/eventbrite-client-py',
     packages = ['eventbrite'],
     license='Apache',
     classifiers = [

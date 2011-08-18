@@ -44,5 +44,10 @@ NOTE:  This package requires a JSON library - by default we check for "simplejso
     #   Here is an example for calling the API's user_list_events method
     eb_client.list_user_events()
 
-##Links##
-* 0.2x source <http://github.com/mtai/eventbrite/>
+##Resources##
+* API Documentation - <http://developer.eventbrite.com/doc/>
+* API QuickStart Guide - <http://developer.eventbrite.com/doc/getting-started/>
+* Eventbrite Open Source - <http://eventbrite.github.com/>
+* Eventbrite App Showcase - <http://eventbrite.appstores.com/>
+* 0.3.x source - <http://github.com/eventbrite/eventbrite-client-py/>
+* 0.2.x source - <http://github.com/mtai/eventbrite/>

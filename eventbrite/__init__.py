@@ -2,7 +2,7 @@ import logging
 
 from eventbrite.client import EventbriteClient
 
-__version__ = '0.22-beta'
+__version__ = '0.3.0'
 
 class NullHandler(logging.Handler):
     def emit(self, record):

@@ -1,10 +1,10 @@
 Metadata-Version: 1.0
 Name: eventbrite
-Version: v0.2.0-beta
+Version: 0.3.0
 Summary: Client for Eventbrite's HTTP-based API
-Home-page: http://github.com/mtai/eventbrite/
-Author: Matthew Tai
-Author-email: mtai84@gmail.com
+Home-page: http://github.com/eventbrite/eventbrite-client-py
+Author: Ryan Jarvinen
+Author-email: ryan.jarvinen@gmail.com
 License: Apache
 Description: ==========
         eventbrite
@@ -13,13 +13,9 @@ Description: ==========
         Description
         ===========
         Simple client for Eventbrite's HTTP-based API
-        
-        This client provides:
-        1) Basic type validation of arguments
-        2) Basic checks for required arguments
-        3) Dictionary-based returns as described in Eventbrite's API docutmentation
-        
-        For information, see http://developer.eventbrite.com/doc/
+        For usage information, see 
+        * http://github.com/eventbrite/eventbrite-client-py/
+        * http://developer.eventbrite.com/doc/
         
         Installation
         ============
@@ -30,7 +26,12 @@ Description: ==========
         
         Links
         =====
-        * 0.2.x source <http://github.com/mtai/eventbrite/>
+        * API Documentation - <http://developer.eventbrite.com/doc/>
+        * API QuickStart Guide - <http://developer.eventbrite.com/doc/getting-started/>
+        * Eventbrite Open Source - <http://eventbrite.github.com/>
+        * Eventbrite App Showcase - <http://eventbrite.appstores.com/>
+        * 0.3.x source - <http://github.com/eventbrite/eventbrite-client-py/>
+
         
 Platform: UNKNOWN
 Classifier: Development Status :: 4 - Beta

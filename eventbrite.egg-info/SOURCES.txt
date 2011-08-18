@@ -2,7 +2,7 @@ AUTHORS.txt
 CHANGES.txt
 LICENSE.txt
 MANIFEST.in
-README.txt
+README.md
 setup.cfg
 setup.py
 eventbrite/__init__.py
