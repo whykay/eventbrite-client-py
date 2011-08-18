@@ -38,7 +38,7 @@ Set your user_key if you want to access private data - http://eventbrite.com/use
 ###Calling API methods###
 See [Eventbrite's API method documentation](http://developer.eventbrite.com/doc/) for more information about the list of available client methods.
 
-Here is an example using the API's [user_list_events](http://developer.eventbrite.com/doc/users/user_list_events/) method
+Here is an example using the API's [user_list_events](http://developer.eventbrite.com/doc/users/user_list_events/) method:
 
     response = eb_client.user_list_events()
 
