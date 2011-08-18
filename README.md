@@ -42,7 +42,7 @@ Here is an example for calling the API's [user_list_events](http://developer.eve
 
     response = eb_client.user_list_events()
 
-The [event_get](http://developer.eventbrite.com/doc/events/event_get/) might look like this:
+The [event_get](http://developer.eventbrite.com/doc/events/event_get/) API call should look like this:
 
     response = eb_client.event_get({'id':1848891083})
 
