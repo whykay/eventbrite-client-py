@@ -29,6 +29,34 @@ class EventbriteClient(object):
     """Client for Eventbrite's HTTP-based API"""
     eventbrite_api_endpoint = 'www.eventbrite.com'
     eventbrite_request_template = 'https://%(host)s/json/%(method)s?%(arguments)s'
+    # these method aliases are for backwords compatibility with code
+    # that was written before version 0.3 of this client was released
+    #  !!WARNING: These calls are being depricated!!
+    method_aliases = { 'copy_event': 'event_copy'
+                     , 'get_event': 'event_get'
+                     , 'get_user': 'user_get'
+                     , 'list_event_attendees': 'event_list_attendees'
+                     , 'list_event_discounts': 'event_list_discounts'
+                     , 'list_organizer_events': 'event_list_organizer'
+                     , 'list_user_events': 'user_list_events'
+                     , 'list_user_organizers': 'user_list_organizers'
+                     , 'list_user_tickets': 'user_list_tickets'
+                     , 'list_user_venues': 'user_list_venues'
+                     , 'new_discount': 'discount_new'
+                     , 'new_event': 'event_new'
+                     , 'new_organizer': 'organizer_new'
+                     , 'new_ticket': 'ticket_new'
+                     , 'new_user': 'user_new'
+                     , 'new_venue': 'venue_new'
+                     , 'search_events': 'event_search'
+                     , 'update_discount': 'discount_update'
+                     , 'update_event': 'event_update'
+                     , 'update_organizer': 'organizer_update'
+                     , 'update_payment': 'payment_update'
+                     , 'update_ticket': 'ticket_update'
+                     , 'update_user': 'user_update'
+                     , 'update_venue': 'venue_update' }
+
     def __init__(self, app_key=None, user_key=None, password=None):
         """Initialize the client with the given app key and the user key"""
         self._https_connection = httplib.HTTPSConnection(self.eventbrite_api_endpoint)
@@ -41,6 +69,8 @@ class EventbriteClient(object):
 
     # dynamic methods handler - call API methods on the local client object
     def __getattr__(self, method):
+        if method in self.method_aliases:
+            method = self.method_aliases[method]
         def _call(*args, **kwargs):
             return self._request(method, args)
         return _call
@@ -88,3 +118,11 @@ class EventbriteClient(object):
         if 'error' in response and 'error_message' in response['error'] :
             raise EnvironmentError( response['error']['error_message'] )
         return response
+
+    @staticmethod
+    def ticketWidget(evnt):
+        return '<div style="width:100%; text-align:left;" ><iframe src="http://www.eventbrite.com/tickets-external?eid=' + str(evnt['id']) + '&ref=etckt" frameborder="0" height="192" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/etckt" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=etckt" >' + evnt['title'] + '</a><span style="color:#ddd;" > powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=etckt" >Eventbrite</a></div></div>'
+
+    @staticmethod
+    def registrationWidget(evnt):
+        return '<div style="width:100%; text-align:left;" ><iframe src="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=eweb" frameborder="0" height="1000" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/eweb" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=eweb">' + evnt['title'] + '</a><span style="color:#ddd;"> powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=eweb" >Eventbrite</a></div></div>'
