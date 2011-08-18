@@ -57,18 +57,28 @@ class EventbriteClient(object):
                      , 'update_user': 'user_update'
                      , 'update_venue': 'venue_update' }
 
-    def __init__(self, app_key=None, user_key=None, password=None):
+    def __init__(self, tokens=None, user_key=None, password=None):
         """Initialize the client with the given app key and the user key"""
         self._https_connection = httplib.HTTPSConnection(self.eventbrite_api_endpoint)
-        self._app_key = app_key
-        if password:
-            self._username = user_key
-            self._password = password
+        self._auth_tokens = {}
+        # set initialization tokens by name
+        if type(tokens) == type(dict()):
+            self._auth_tokens.update(tokens)
+        # set initialization tokens by order
         else:
-            self._user_key = user_key
+            self._auth_tokens['app_key'] = tokens
+            # if we get three initialization tokens ( if "password" is set )
+            #    use username+password combo for auth
+            if password:
+                self._auth_tokens['user'] = user_key
+                self._auth_tokens['password'] = password
+            # else use user_key for authentication
+            else:
+                self._auth_tokens['user_key'] = user_key
 
     # dynamic methods handler - call API methods on the local client object
     def __getattr__(self, method):
+        # enable backwords compatibility with pre 0.3.0 API client code
         if method in self.method_aliases:
             method = self.method_aliases[method]
         def _call(*args, **kwargs):
@@ -85,20 +95,14 @@ class EventbriteClient(object):
         Returns: A dictionary with a return structure defined at http://developer.eventbrite.com/doc/
         """
         #unpack our params
-        if len(params) > 0: 
+        if type(params) == type(()) and len(params) > 0: 
             method_arguments = dict(params[0])
         else:
-            method_arguments = dict()
+            method_arguments = {}
 
-        # add the authentication tokens provided during initialization
-        if self._app_key:
-            method_arguments['app_key'] = self._app_key
-        if self._user_key:
-            method_arguments['user_key'] = self._user_key
-        elif( self._username and self._password):
-            method_arguments['user'] = self._username
-            method_arguments['password'] = self._password
-            
+        # Add authentication tokens
+        method_arguments.update(self._auth_tokens)
+
         # urlencode API method parameters
         encoded_params = urllib.urlencode(method_arguments)
         
@@ -119,6 +123,7 @@ class EventbriteClient(object):
             raise EnvironmentError( response['error']['error_message'] )
         return response
 
+class EventbriteWidgets:
     @staticmethod
     def ticketWidget(evnt):
         return '<div style="width:100%; text-align:left;" ><iframe src="http://www.eventbrite.com/tickets-external?eid=' + str(evnt['id']) + '&ref=etckt" frameborder="0" height="192" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/etckt" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=etckt" >' + str(evnt['title']) + '</a><span style="color:#ddd;" > powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=etckt" >Eventbrite</a></div></div>'
@@ -143,4 +148,3 @@ class EventbriteClient(object):
     def linkWidget(evnt, text=False, color='#000000'):
         text = text if text else evnt['title'] 
         return '<a href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=elink" target="_blank" style="color:' + color + ';">' + text + '</a>'
-
