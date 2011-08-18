@@ -1,15 +1,10 @@
 #eventbrite-client.py#
 
 ##Description##
-Simple client for Eventbrite's HTTP-based API
-
-Client provides the following:
-
-* Basic type validation of arguments
-* Basic checks for required arguments
-* Dictionary-based returns as described in Eventbrite's API documentation
-
-For information, see http://developer.eventbrite.com/doc/
+A simple python-based http client for the Eventbrite API
+For the latest information on this project, take a look at:
+* [This project's source code repo](http://github.com/eventbrite/eventbrite-client-py/)
+* [The Eventbrite API documentation](http://developer.eventbrite.com/doc/)
 
 ##Usage Examples##
 
