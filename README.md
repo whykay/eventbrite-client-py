@@ -31,8 +31,8 @@ Your API / Application key is required to initialize the client - http://eventbr
 
 Set your user_key if you want to access private data - http://eventbrite.com/userkeyapi
 
-    eb_auth_tokens = {'app_key': 'N2EzOTZjY2RmNTQz',
-                      'user_key': '130080046812762479921'}
+    eb_auth_tokens = {'app_key': 'YOUR_APP_KEY',
+                      'user_key': 'YOU_USER_KEY'}
     eb_client = eventbrite.EventbriteClient(eb_auth_tokens)
 
 ###Calling API methods###
