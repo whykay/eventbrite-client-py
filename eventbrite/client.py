@@ -6,15 +6,12 @@ import logging
 import urllib
 from eventbrite import json_lib
 
-EVENTBRITE_DATE_STRING = "%Y-%m-%d %H:%M:%S"
-EVENTBRITE_LOGGER = logging.getLogger(__name__)
-
 # Input transformations
 def _datetime_to_string(incoming_datetime):
-    return incoming_datetime.strftime(EVENTBRITE_DATE_STRING)
+    return incoming_datetime.strftime(eventbrite.EventbriteClient.eb_date_string)
 
 def _string_to_datetime(incoming_string):
-    return datetime.strptime(incoming_string, EVENTBRITE_DATE_STRING)
+    return datetime.strptime(incoming_string, eventbrite.EventbriteClient.eb_date_string)
 
 def _boolean_one_or_zero(is_true):
     return (is_true and '1') or '0'
@@ -27,6 +24,7 @@ def _comma_separated_list(input_list):
 
 class EventbriteClient(object):
     """Client for Eventbrite's HTTP-based API"""
+    eb_date_string = "%Y-%m-%d %H:%M:%S"
     eventbrite_api_endpoint = 'www.eventbrite.com'
     eventbrite_request_template = 'https://%(host)s/json/%(method)s?%(arguments)s'
     # these method aliases are for backwords compatibility with code
@@ -59,6 +57,7 @@ class EventbriteClient(object):
 
     def __init__(self, tokens=None, user_key=None, password=None):
         """Initialize the client with the given app key and the user key"""
+        logger = logging.getLogger(__name__)
         self._https_connection = httplib.HTTPSConnection(self.eventbrite_api_endpoint)
         self._auth_tokens = {}
         # set initialization tokens by name
@@ -109,7 +108,7 @@ class EventbriteClient(object):
         
         # construct our request url
         request_url = self.eventbrite_request_template % dict(host=self.eventbrite_api_endpoint, method=method, arguments=encoded_params)
-        EVENTBRITE_LOGGER.debug("REQ - %s", request_url)
+        self.logger.debug("REQ - %s", request_url)
 
         # Send a GET request to Eventbrite
         # if using OAuth2.0 for authentication, set additional headers
@@ -120,7 +119,7 @@ class EventbriteClient(object):
 
         # Read the JSON response 
         response_data = self._https_connection.getresponse().read()
-        EVENTBRITE_LOGGER.debug("RES - %s", response_data)
+        self.logger.debug("RES - %s", response_data)
 
         # decode our response
         response = json_lib.loads(response_data)
