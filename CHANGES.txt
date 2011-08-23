@@ -1,5 +1,4 @@
-0.3.1, 2011-08-25 -- Updating documentation
-0.3.0, 2011-08-24 -- Functions added for rendering Eventbrite widgets
+0.30, 2011-08-23 -- Functions added for rendering Eventbrite widgets
 
 0.22-beta, 2011-05-06 -- Minor bugfix release
  * user_email != int, thanks to dcrosta

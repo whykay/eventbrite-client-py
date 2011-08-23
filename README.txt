@@ -77,8 +77,8 @@ Resources
 * API QuickStart Guide - http://developer.eventbrite.com/doc/getting-started
 * Eventbrite Open Source - http://eventbrite.github.com
 * Eventbrite App Showcase - http://eventbrite.appstores.com
-* 0.3.x source - http://github.com/eventbrite/eventbrite-client-py
-* 0.2.x source - http://github.com/mtai/eventbrite
+* 0.3x source - http://github.com/eventbrite/eventbrite-client-py
+* 0.2x source - http://github.com/mtai/eventbrite
 
 .. _user_list_events: http://developer.eventbrite.com/doc/users/user_list_events 
 .. _event_get: http://developer.eventbrite.com/doc/events/event_get/ 

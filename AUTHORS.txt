@@ -1,10 +1,10 @@
-eventbrite-client 0.3.x:
+eventbrite-client 0.3x:
 =================
 Primary authors:
 
 * Ryan Jarvinen <ryan dot jarvinen at gmail>
 
-eventbrite-client 0.2.x:
+eventbrite-client 0.2x:
 ==================
 Primary authors:
 
@@ -18,7 +18,7 @@ Contributors (alphabetical by last):
 * Ken Mitton <mittonk@alum.mit.edu>
 
 
-eventbrite-client 0.1.x:
+eventbrite-client 0.1x:
 ==================
 Primary authors:
 

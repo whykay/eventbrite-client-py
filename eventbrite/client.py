@@ -28,7 +28,7 @@ class EventbriteClient(object):
     eventbrite_api_endpoint = 'www.eventbrite.com'
     eventbrite_request_template = 'https://%(host)s/json/%(method)s?%(arguments)s'
     # these method aliases are for backwords compatibility with code
-    # that was written before version 0.3 of this client was released
+    # that was written before version 0.30 of this client was released
     #  !!WARNING: These calls are being depricated!!
     method_aliases = { 'copy_event': 'event_copy'
                      , 'get_event': 'event_get'
@@ -77,7 +77,7 @@ class EventbriteClient(object):
 
     # dynamic methods handler - call API methods on the local client object
     def __getattr__(self, method):
-        # enable backwords compatibility with pre 0.3.0 API client code
+        # enable backwords compatibility with pre-0.30 API client code
         if method in self.method_aliases:
             method = self.method_aliases[method]
         def _call(*args, **kwargs):

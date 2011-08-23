@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+#from distutils.core import setup
 
 from eventbrite import __version__ as version
 
@@ -10,7 +11,7 @@ setup(
     author = 'Ryan Jarvinen',
     author_email = 'ryan.jarvinen@gmail.com',
     description = "pyhton client for Eventbrite's HTTP-based API",
-    long_description=open('README.md').read(),
+    long_description=open('README.txt').read(),
     url = 'http://github.com/eventbrite/eventbrite-client-py',
     packages = ['eventbrite'],
     license='Apache',
@@ -25,5 +26,7 @@ setup(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Software Development :: Object Brokering',
+        'Environment :: Web Environment',
     ],
 )
