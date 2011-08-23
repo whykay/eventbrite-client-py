@@ -3,12 +3,14 @@ CHANGES.txt
 LICENSE.txt
 MANIFEST.in
 README.md
+README.txt
 setup.cfg
 setup.py
 eventbrite/__init__.py
 eventbrite/client.py
 eventbrite/json_lib.py
 eventbrite.egg-info/PKG-INFO
+eventbrite.egg-info/PKG-INFO.bal
 eventbrite.egg-info/SOURCES.txt
 eventbrite.egg-info/dependency_links.txt
 eventbrite.egg-info/top_level.txt
