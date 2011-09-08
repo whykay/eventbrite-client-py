@@ -1,6 +1,7 @@
 """Simple Eventbrite client for the HTTP-based API
 """
 import datetime
+import time
 import httplib
 import logging
 import urllib
@@ -8,10 +9,10 @@ from eventbrite import json_lib
 
 # Input transformations
 def _datetime_to_string(incoming_datetime):
-    return incoming_datetime.strftime(eventbrite.EventbriteClient.eb_date_string)
+    return time.strftime("%Y-%m-%d %H:%M:%S", incoming_datetime )
 
 def _string_to_datetime(incoming_string):
-    return datetime.strptime(incoming_string, eventbrite.EventbriteClient.eb_date_string)
+    return time.strptime(incoming_string, "%Y-%m-%d %H:%M:%S")
 
 def _boolean_one_or_zero(is_true):
     return (is_true and '1') or '0'
@@ -108,7 +109,7 @@ class EventbriteClient(object):
         
         # construct our request url
         request_url = self.eventbrite_request_template % dict(host=self.eventbrite_api_endpoint, method=method, arguments=encoded_params)
-        self.logger.debug("REQ - %s", request_url)
+        #self.logger.debug("REQ - %s", request_url)
 
         # Send a GET request to Eventbrite
         # if using OAuth2.0 for authentication, set additional headers
@@ -119,7 +120,7 @@ class EventbriteClient(object):
 
         # Read the JSON response 
         response_data = self._https_connection.getresponse().read()
-        self.logger.debug("RES - %s", response_data)
+        #self.logger.debug("RES - %s", response_data)
 
         # decode our response
         response = json_lib.loads(response_data)
@@ -129,26 +130,78 @@ class EventbriteClient(object):
 
 class EventbriteWidgets:
     @staticmethod
+    def eventList( evnts, callback, options=None ):
+        # a loop for iterating over a collection of events, applying a callback to each element
+        #create our default response envelope
+        html = ['<div class="eb_event_list">']
+        #unpack our events list based on the default response format provided by the event_search, user_list_events, or organizer_list_events API methods
+        if( type(evnts) == type(dict()) and 'events' in evnts \
+            and type([]) == type(evnts['events']) and callable(callback)):
+            if options:
+                for evnt in evnts['events']:
+                    html.append(callback( evnt['event'], options))
+            else:
+                for evnt in evnts['events']:
+                    html.append(callback( evnt['event'] ))
+        else:
+            html.append('No events were found at this time.')
+        html.append('</div>')
+        return '\n'.join(html)
+
+    @staticmethod
+    def eventListRow( evnt ):
+        #decode the timestamp for start_date
+        start_date = _string_to_datetime( evnt['start_date'] )
+        #find venue name, default to "online"
+        if( 'venue' in evnt and 'name' in evnt['venue'] ):
+            venue_name = evnt['venue']['name']
+        else:
+            venue_name = 'online'
+        #generate and return the HTML for this list item
+        html = u'<div class="eb_event_list_item" id="evnt_div_%(event_id)d"><span class="eb_event_list_date">%(start_date_str)s</span><span class="eb_event_list_time">%(start_time_str)s</span><a class="eb_event_list_title" href="%(event_url)s">%(event_title)s</a><span class="eb_event_list_location">%(venue_label)s</span></div>' % \
+            {"event_id": evnt['id']
+            ,"start_date_str": time.strftime('%a, %B %e', start_date)
+            ,"event_title": evnt['title']
+            ,"start_time_str": time.strftime('%l:%M %P', start_date)
+            ,"event_url": evnt['url']
+            ,"venue_label": venue_name}
+        return html.encode('utf-8')
+
+    @staticmethod
     def ticketWidget(evnt):
-        return '<div style="width:100%; text-align:left;" ><iframe src="http://www.eventbrite.com/tickets-external?eid=' + str(evnt['id']) + '&ref=etckt" frameborder="0" height="192" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/etckt" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=etckt" >' + str(evnt['title']) + '</a><span style="color:#ddd;" > powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=etckt" >Eventbrite</a></div></div>'
+        html = u'<div style="width:100%%; text-align:left;"><iframe src="http://www.eventbrite.com/tickets-external?eid=%(event_id)d&ref=etckt" frameborder="0" height="192" width="100%%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%%; text-align:left;"><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/etckt">Online Ticketing</a><span style="color:#ddd;"> for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/%(event_id)d?ref=etckt">%(event_title)s</a><span style="color:#ddd;"> powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=etckt">Eventbrite</a></div></div>' % \
+            {'event_id': evnt['id'], 'event_title': evnt['title']}
+        return html.encode('utf-8')
 
     @staticmethod
     def registrationWidget(evnt):
-        return '<div style="width:100%; text-align:left;" ><iframe src="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=eweb" frameborder="0" height="1000" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/eweb" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=eweb">' + str(evnt['title']) + '</a><span style="color:#ddd;"> powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=eweb" >Eventbrite</a></div></div>'
+        html = u'<div style="width:100%%; text-align:left;"><iframe src="http://www.eventbrite.com/event/%(event_id)d?ref=eweb" frameborder="0" height="1000" width="100%%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%%; text-align:left;"><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/eweb">Online Ticketing</a><span style="color:#ddd;"> for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/%(event_id)d?ref=eweb">%(event_title)s</a><span style="color:#ddd;"> powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=eweb">Eventbrite</a></div></div>' % \
+            {'event_id': evnt['id'], 'event_title': evnt['title']}
+        return html.encode('utf-8')
 
     @staticmethod
     def calendarWidget(evnt):
-        return '<div style="width:195px; text-align:center;" ><iframe src="http://www.eventbrite.com/calendar-widget?eid=' + str(evnt['id']) + '" frameborder="0" height="382" width="195" marginheight="0" marginwidth="0" scrolling="no" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:195px; text-align:center;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/ecal">Online event registration</a><span style="color:#ddd;"> powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=ecal">Eventbrite</a></div></div>'
+        html = u'<div style="width:195px; text-align:center;"><iframe src="http://www.eventbrite.com/calendar-widget?eid=%(event_id)d" frameborder="0" height="382" width="195" marginheight="0" marginwidth="0" scrolling="no" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:195px; text-align:center;"><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/ecal">Online event registration</a><span style="color:#ddd;"> powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=ecal">Eventbrite</a></div></div>' % \
+            {'event_id': evnt['id']}
+        return html.encode('utf-8')
 
     @staticmethod
     def countdownWidget(evnt):
-        return '<div style="width:195px; text-align:center;"><iframe src="http://www.eventbrite.com/countdown-widget?eid=' + str(evnt['id']) + '" frameborder="0" height="479" width="195" marginheight="0" marginwidth="0" scrolling="no" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:195px; text-align:center;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/ecount" >Online event registration</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=ecount">' + str(evnt['title']) + '</a></div></div>'
+        html = u'<div style="width:195px; text-align:center;"><iframe src="http://www.eventbrite.com/countdown-widget?eid=%(event_id)d" frameborder="0" height="479" width="195" marginheight="0" marginwidth="0" scrolling="no" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:195px; text-align:center;"><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/ecount">Online event registration</a><span style="color:#ddd;"> for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/event/%(event_id)d?ref=ecount">%(event_title)s</a></div></div>' % \
+            {'event_id': evnt['id'], 'event_title': evnt['title']}
+        return html.encode('utf-8')
 
     @staticmethod
     def buttonWidget(evnt):
-        return '<a href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=ebtn" target="_blank"><img border="0" src="http://www.eventbrite.com/registerbutton?eid=' + str(evnt['id']) + '" alt="Register for ' + str(evnt['title']) + ' on Eventbrite" /></a>'
+        html = u'<a href="http://www.eventbrite.com/event/%(event_id)d?ref=ebtn" target="_blank"><img border="0" src="http://www.eventbrite.com/registerbutton?eid=%(event_id)d" alt="Register for %(event_title)s on Eventbrite" /></a>' % \
+            {'event_id': evnt['id'], 'event_title': evnt['title']}
+        return html.encode('utf-8')
 
     @staticmethod
     def linkWidget(evnt, text=False, color='#000000'):
         text = text if text else evnt['title'] 
-        return '<a href="http://www.eventbrite.com/event/' + str(evnt['id']) + '?ref=elink" target="_blank" style="color:' + color + ';">' + text + '</a>'
+        html = u'<a href="http://www.eventbrite.com/event/%(event_id)d?ref=elink" target="_blank" style="color:%(link_color)s;">%(link_text)s</a>' % \
+            {'event_id': evnt['id']
+            ,'link_color': color
+            ,'link_text': text}
+        return html.encode('utf-8')
