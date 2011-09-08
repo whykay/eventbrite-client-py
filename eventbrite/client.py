@@ -130,8 +130,10 @@ class EventbriteClient(object):
 
 class EventbriteWidgets:
     @staticmethod
-    def eventList( evnts, callback, options=None ):
+    def eventList( evnts, callback=None, options=None ):
         # a loop for iterating over a collection of events, applying a callback to each element
+        if not callback:
+            callback = EventbriteWidgets.eventListRow
         #create our default response envelope
         html = ['<div class="eb_event_list">']
         #unpack our events list based on the default response format provided by the event_search, user_list_events, or organizer_list_events API methods
