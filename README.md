@@ -35,6 +35,10 @@ Set your user_key if you want to access private data - http://eventbrite.com/use
                       'user_key': 'YOUR_USER_KEY'}
     eb_client = eventbrite.EventbriteClient(eb_auth_tokens)
 
+### Initializing the client with an OAuth2.0 access_token ###
+
+    eb_client = eventbrite.EventbriteClient({'access_code': 'YOUR_OAUTH2_ACCESS_TOKEN'})
+
 ###Calling API methods###
 See [Eventbrite's API method documentation](http://developer.eventbrite.com/doc/) for more information about the list of available client methods.
 
