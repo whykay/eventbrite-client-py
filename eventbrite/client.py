@@ -85,7 +85,6 @@ class EventbriteClient(object):
             return self._request(method, args)
         return _call
 
-    #def _execute_api_call(self, method, params):
     def _request(self, method='', params=dict()):
         """Execute an API call on Eventbrite using their HTTP-based API
 
@@ -126,6 +125,31 @@ class EventbriteClient(object):
         response = json_lib.loads(response_data)
         if 'error' in response and 'error_message' in response['error'] :
             raise EnvironmentError( response['error']['error_message'] )
+        return response
+
+    def oauth_handshake( self, tokens ):
+        """Exchange an intermediary access_code for an OAuth2.0 access_token
+
+        tokens - dict - 'app_key' = API_key, 'client_secret' = client secret, 'access_code' = access_code
+
+        Returns: an Oauth2.0 access_token, see http://developer.eventbrite.com/doc/authentication/oauth2/
+        """
+        params = {'grant_type'   : 'authorization_code', 
+                  'client_id'    : tokens['app_key'], 
+                  'client_secret': tokens['client_secret'], 
+                  'code'         : tokens['access_code'] }
+
+        request_url = 'https://%(host)s/oauth/token' % dict(host=self.eventbrite_api_endpoint)
+        post_body = urllib.urlencode(params)
+        headers = {'Content-type': "application/x-www-form-urlencoded"}
+        
+        self._https_connection.request('POST', request_url, post_body, headers)
+        response_data = self._https_connection.getresponse().read()
+        response = json_lib.loads(response_data)
+
+        if 'error' in response or 'access_token' not in response :
+            raise EnvironmentError( response['error_description'] )
+
         return response
 
 class EventbriteWidgets:
