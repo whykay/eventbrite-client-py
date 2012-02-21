@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: eventbrite
-Version: 0.30
+Version: 0.43
 Summary: pyhton client for Eventbrite's HTTP-based API
 Home-page: http://github.com/eventbrite/eventbrite-client-py
 Author: Ryan Jarvinen
@@ -16,7 +16,7 @@ Description: ====================
         
         A simple python-based http client for the Eventbrite API
         
-        For the latest information on this project, take a look at::
+        For the latest information on this project, take a look at:
         
         * `This project's source code repo`_ - http://github.com/eventbrite/eventbrite-client-py/
         * `Eventbrite's API documentation`_ - http://developer.eventbrite.com/doc/
@@ -85,6 +85,7 @@ Description: ====================
         * API QuickStart Guide - http://developer.eventbrite.com/doc/getting-started
         * Eventbrite Open Source - http://eventbrite.github.com
         * Eventbrite App Showcase - http://eventbrite.appstores.com
+        * 0.40 source - http://github.com/eventbrite/eventbrite-client-py
         * 0.3x source - http://github.com/eventbrite/eventbrite-client-py
         * 0.2x source - http://github.com/mtai/eventbrite
         

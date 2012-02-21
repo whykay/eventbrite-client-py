@@ -61,5 +61,6 @@ Rendering an event in html as a [ticketWidget](http://www.eventbrite.com/t/how-t
 * API QuickStart Guide - <http://developer.eventbrite.com/doc/getting-started/>
 * Eventbrite Open Source - <http://eventbrite.github.com/>
 * Eventbrite App Showcase - <http://eventbrite.appstores.com/>
+* 0.40 source - <http://github.com/eventbrite/eventbrite-client-py/>
 * 0.3x source - <http://github.com/eventbrite/eventbrite-client-py/>
 * 0.2x source - <http://github.com/mtai/eventbrite/>

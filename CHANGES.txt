@@ -1,3 +1,5 @@
+0.40, 2012-02-17 -- added a helper function for exchanging oauth access_codes for access_tokens
+
 0.30, 2011-08-23 -- Functions added for rendering Eventbrite widgets
 
 0.22-beta, 2011-05-06 -- Minor bugfix release

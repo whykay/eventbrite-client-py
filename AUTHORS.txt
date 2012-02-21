@@ -1,3 +1,9 @@
+eventbrite-client 0.40:
+=================
+Primary authors:
+
+* Ryan Jarvinen <ryan dot jarvinen at gmail>
+
 eventbrite-client 0.3x:
 =================
 Primary authors:
