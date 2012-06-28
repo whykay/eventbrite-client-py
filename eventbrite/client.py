@@ -219,7 +219,7 @@ class EventbriteWidgets:
 
     @staticmethod
     def buttonWidget(evnt):
-        html = u'<a href="http://www.eventbrite.com/event/%(event_id)d?ref=ebtn" target="_blank"><img border="0" src="http://www.eventbrite.com/registerbutton?eid=%(event_id)d" alt="Register for %(event_title)s on Eventbrite" /></a>' % \
+        html = u'<a href="http://www.eventbrite.com/event/%(event_id)d?ref=ebtn" target="_blank"><img border="0" src="http://www.eventbrite.com/custombutton?eid=%(event_id)d" alt="Register for %(event_title)s on Eventbrite" /></a>' % \
             {'event_id': evnt['id'], 'event_title': evnt['title']}
         return html.encode('utf-8')
 
