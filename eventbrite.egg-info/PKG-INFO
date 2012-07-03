@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: eventbrite
-Version: 0.43
+Version: 0.44
 Summary: pyhton client for Eventbrite's HTTP-based API
 Home-page: http://github.com/eventbrite/eventbrite-client-py
 Author: Ryan Jarvinen
