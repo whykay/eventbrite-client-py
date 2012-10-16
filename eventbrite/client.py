@@ -5,6 +5,7 @@ import time
 import httplib
 import logging
 import urllib
+import sys
 from eventbrite import json_lib
 
 # Input transformations
@@ -116,6 +117,11 @@ class EventbriteClient(object):
             self._https_connection.request('GET', request_url, None, {'Authorization': "Bearer " + self._auth_tokens['access_token']})
         else:
             self._https_connection.request('GET', request_url)
+
+        # extending the timeout window per request (not system-wide) 
+        # requires python 2.5 or better:
+        if int(sys.version[0]) >= 2 and int(sys.version[2]) >= 5:
+            self._https_connection.sock.settimeout(200)
 
         # Read the JSON response 
         response_data = self._https_connection.getresponse().read()

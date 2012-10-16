@@ -3,7 +3,7 @@ import logging
 from eventbrite.client import EventbriteClient
 from eventbrite.client import EventbriteWidgets
 
-__version__ = '0.44'
+__version__ = '0.45'
 
 class NullHandler(logging.Handler):
     def emit(self, record):
