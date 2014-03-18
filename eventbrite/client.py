@@ -2,7 +2,7 @@
 """
 import datetime
 import time
-import httplib
+import http.client
 import logging
 import urllib
 import sys
@@ -60,7 +60,7 @@ class EventbriteClient(object):
     def __init__(self, tokens=None, user_key=None, password=None):
         """Initialize the client with the given app key and the user key"""
         logger = logging.getLogger(__name__)
-        self._https_connection = httplib.HTTPSConnection(self.eventbrite_api_endpoint)
+        self._https_connection = http.client.HTTPSConnection(self.eventbrite_api_endpoint)
         self._auth_tokens = {}
         # set initialization tokens by name
         if type(tokens) == type(dict()):
