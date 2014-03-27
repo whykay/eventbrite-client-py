@@ -105,7 +105,7 @@ class EventbriteClient(object):
             method_arguments.update(self._auth_tokens)
 
         # urlencode API method parameters
-        encoded_params = urllib.urlencode(method_arguments)
+        encoded_params = urllib.parse.urlencode(method_arguments)
         
         # construct our request url
         request_url = self.eventbrite_request_template % dict(host=self.eventbrite_api_endpoint, method=method, arguments=encoded_params)
@@ -125,10 +125,10 @@ class EventbriteClient(object):
 
         # Read the JSON response 
         response_data = self._https_connection.getresponse().read()
-        #self.logger.debug("RES - %s", response_data)
+        # self.logger.debug("RES - %s", response_data)
 
         # decode our response
-        response = json_lib.loads(response_data)
+        response = json_lib.loads(response_data.decode())
         if 'error' in response and 'error_message' in response['error'] :
             raise EnvironmentError( response['error']['error_message'] )
         return response
